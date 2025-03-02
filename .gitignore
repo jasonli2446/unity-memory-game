@@ -4,4 +4,10 @@ Assembly-CSharp.csproj
 Memory Game.sln
 Assets/TextMesh Pro
 Assets/InputSystem_Actions.inputactions
-Assets/Settings
+Library
+Logs
+ProjectSettings
+Temp
+UserSettings
+*.meta
+*.asset
