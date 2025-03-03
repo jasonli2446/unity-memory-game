@@ -36,4 +36,57 @@ public class MemoryCard : MonoBehaviour
 	{
 		cardBack.SetActive(true);
 	}
+
+	public IEnumerator PlayMatchAnimation()
+	{
+		// Shake animation
+		Vector3 originalPosition = transform.position;
+		float shakeDuration = 0.5f;
+		float elapsedTime = 0f;
+
+		while (elapsedTime < shakeDuration)
+		{
+			// Create random offset for shaking effect
+			float offsetX = Random.Range(-0.1f, 0.1f);
+			float offsetY = Random.Range(-0.1f, 0.1f);
+
+			// Apply offset to card position for shaking effect
+			transform.position = new Vector3(
+					originalPosition.x + offsetX,
+					originalPosition.y + offsetY,
+					originalPosition.z
+			);
+
+			// Small delay between position changes for visible shaking
+			elapsedTime += Time.deltaTime;
+			yield return null;
+		}
+
+		// Reset position and create smoke effect
+		transform.position = originalPosition;
+		CreateSmokeEffect();
+
+		// Hide the card after the smoke effect starts
+		yield return new WaitForSeconds(0.2f);
+		gameObject.SetActive(false);
+	}
+
+	private void CreateSmokeEffect()
+	{
+		// Create the smoke particle effect slightly above the card
+		Vector3 smokePosition = transform.position;
+		smokePosition.z = transform.position.z - 1f; // Adjust this value as needed to ensure visibility
+
+		GameObject smokeEffect = Instantiate(controller.smokeEffectPrefab, smokePosition, Quaternion.identity);
+
+		// Set the sorting layer and order in layer
+		ParticleSystemRenderer renderer = smokeEffect.GetComponent<ParticleSystemRenderer>();
+		if (renderer != null)
+		{
+			renderer.sortingLayerName = "Effects";
+			renderer.sortingOrder = 10;
+		}
+
+		Destroy(smokeEffect, 1f);
+	}
 }

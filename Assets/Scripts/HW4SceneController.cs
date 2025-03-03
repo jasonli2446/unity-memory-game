@@ -17,6 +17,7 @@ public class HW4SceneController : MonoBehaviour
 	[SerializeField] private Sprite[] images;
 	[SerializeField] private TextMeshProUGUI scoreLabel;
 	[SerializeField] private GameObject grid;
+	[SerializeField] public GameObject smokeEffectPrefab;
 
 	private MemoryCard _firstRevealed;
 	private MemoryCard _secondRevealed;
@@ -188,6 +189,10 @@ public class HW4SceneController : MonoBehaviour
 		{
 			_score++;
 			scoreLabel.text = "Score: " + _score;
+
+			// Start animation coroutines on both cards
+			StartCoroutine(_firstRevealed.PlayMatchAnimation());
+			StartCoroutine(_secondRevealed.PlayMatchAnimation());
 		}
 		// otherwise turn them back over after .5s pause
 		else
