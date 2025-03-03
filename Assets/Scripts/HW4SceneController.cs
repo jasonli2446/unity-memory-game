@@ -18,7 +18,10 @@ public class HW4SceneController : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI scoreLabel;
 	[SerializeField] private GameObject grid;
 	[SerializeField] public GameObject smokeEffectPrefab;
+	[SerializeField] private GameObject victoryScreen;
+	[SerializeField] private float victoryDisplayDuration = 2f;
 
+	private int totalPairs;
 	private MemoryCard _firstRevealed;
 	private MemoryCard _secondRevealed;
 	private int _score = 0;
@@ -89,6 +92,11 @@ public class HW4SceneController : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		if (victoryScreen != null)
+		{
+			victoryScreen.SetActive(false);
+		}
+
 		Vector3 startPos = originalCard.transform.position;
 
 		// Adjust spacing using helper method
@@ -96,6 +104,7 @@ public class HW4SceneController : MonoBehaviour
 
 		// Create shuffled list of cards with appropriate number of pairs
 		int pairsNeeded = (gridRows * gridCols) / 2;
+		totalPairs = pairsNeeded;
 		int[] numbers = new int[gridRows * gridCols];
 
 		// Fill the array with pairs
@@ -193,6 +202,13 @@ public class HW4SceneController : MonoBehaviour
 			// Start animation coroutines on both cards
 			StartCoroutine(_firstRevealed.PlayMatchAnimation());
 			StartCoroutine(_secondRevealed.PlayMatchAnimation());
+
+			// Check for win condition
+			if (_score >= totalPairs)
+			{
+				yield return new WaitForSeconds(0.5f);
+				StartCoroutine(ShowVictoryScreen());
+			}
 		}
 		// otherwise turn them back over after .5s pause
 		else
@@ -343,5 +359,29 @@ public class HW4SceneController : MonoBehaviour
 				c_card.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
 			}
 		}
+	}
+
+	private IEnumerator ShowVictoryScreen()
+	{
+		// Show just the victory image first
+		victoryScreen.SetActive(true);
+
+		// Hide buttons initially
+		Transform buttonsPanel = victoryScreen.transform.Find("ButtonsPanel");
+		if (buttonsPanel != null)
+			buttonsPanel.gameObject.SetActive(false);
+
+		// Wait for the specified duration
+		yield return new WaitForSeconds(victoryDisplayDuration);
+
+		// Show the buttons
+		if (buttonsPanel != null)
+			buttonsPanel.gameObject.SetActive(true);
+	}
+
+	public void QuitGame()
+	{
+		Debug.Log("Quitting application");
+		Application.Quit();
 	}
 }

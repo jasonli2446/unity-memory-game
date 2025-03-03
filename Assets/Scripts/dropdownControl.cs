@@ -25,12 +25,10 @@ public class dropdownControl : MonoBehaviour
         //Clear the old options of the Dropdown menu
         drop.ClearOptions();
 
-        //Create a new option for the Dropdown menu which reads "Option 1" and add to messages List
         optData1 = new TMP_Dropdown.OptionData();
         optData1.text = "2 x 4";
         messages.Add(optData1);
 
-        //Create a new option for the Dropdown menu which reads "Option 2" and add to messages List
         optData2 = new TMP_Dropdown.OptionData();
         optData2.text = "2 x 3";
         messages.Add(optData2);

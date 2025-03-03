@@ -75,7 +75,7 @@ public class MemoryCard : MonoBehaviour
 	{
 		// Create the smoke particle effect slightly above the card
 		Vector3 smokePosition = transform.position;
-		smokePosition.z = transform.position.z - 1f; // Adjust this value as needed to ensure visibility
+		smokePosition.z = transform.position.z - 1f;
 
 		GameObject smokeEffect = Instantiate(controller.smokeEffectPrefab, smokePosition, Quaternion.identity);
 
