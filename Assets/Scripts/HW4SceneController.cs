@@ -27,14 +27,14 @@ public class HW4SceneController : MonoBehaviour
 	// Helper method to calculate scale factor based on grid dimensions
 	private float GetScaleFactorForGrid(int rows, int cols)
 	{
-		float scaleFactor = 1.0f;
+		float scaleFactor = 1.5f;
 		if (rows > 2 || cols > 4)
 		{
-			scaleFactor = 0.8f; // Smaller cards for larger grids
+			scaleFactor = 1.0f; // Smaller cards for larger grids
 		}
 		if (rows >= 4 && cols >= 4)
 		{
-			scaleFactor = 0.7f; // Even smaller for the largest grids
+			scaleFactor = 0.8f; // Even smaller for the largest grids
 		}
 		return scaleFactor;
 	}
@@ -48,12 +48,12 @@ public class HW4SceneController : MonoBehaviour
 		if (rows > 2 || cols > 4)
 		{
 			offsetX = 1.6f; // Reduce horizontal spacing for larger grids
-			offsetY = 2.0f; // Reduce vertical spacing for larger grids
+			offsetY = 1.6f; // Reduce vertical spacing for larger grids
 		}
 		if (rows >= 4 && cols >= 4)
 		{
-			offsetX = 1.4f; // Even smaller spacing for largest grids
-			offsetY = 1.8f; // Even smaller spacing for largest grids
+			offsetX = 1.6f; // Even smaller spacing for largest grids
+			offsetY = 1.4f; // Even smaller spacing for largest grids
 		}
 	}
 
