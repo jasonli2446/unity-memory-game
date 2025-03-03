@@ -2415,10 +2415,16 @@ MonoBehaviour:
   canvasCard: {fileID: 3476975169889974472, guid: 8d7e4dd2b31604104848aac9fcc8591f, type: 3}
   originalCard: {fileID: 576815626}
   images:
-  - {fileID: 21300000, guid: 8d6754846ead34f2380cce6d841852a4, type: 3}
-  - {fileID: 21300000, guid: 571e7f5cb6d8d4f92825fe22e77e1b7b, type: 3}
-  - {fileID: 21300000, guid: a46a620e2ea5b429cac443cdc752d0c5, type: 3}
-  - {fileID: 21300000, guid: ef107fa41ea624c23b52388da835e4eb, type: 3}
+  - {fileID: 21300000, guid: 160195a40a0405e4e992a2f98cdfaf99, type: 3}
+  - {fileID: 21300000, guid: ddb132fcbc7375243aeee7127e35cf37, type: 3}
+  - {fileID: 21300000, guid: b9cd4c80ee1042f4f98ac4bc946bf433, type: 3}
+  - {fileID: 21300000, guid: 7790372e8063e364e826e126e94dc54d, type: 3}
+  - {fileID: 21300000, guid: 0e2bcd9e60a8a4642b498fe82c5814c5, type: 3}
+  - {fileID: 21300000, guid: d39344028a60f304593d331d4d12d07a, type: 3}
+  - {fileID: 21300000, guid: edb3e3aaacd866f40948e3eb9d307b08, type: 3}
+  - {fileID: 21300000, guid: cf93a66a5445dc642ae70ab63a7b1abb, type: 3}
+  - {fileID: 21300000, guid: 1576d839d0a4fe34bb2a1ed57e307919, type: 3}
+  - {fileID: 21300000, guid: 0d5d330033f062f4b9a4309e98a9f9f4, type: 3}
   scoreLabel: {fileID: 1103081497}
   grid: {fileID: 1224182971}
 --- !u!1 &1585198809

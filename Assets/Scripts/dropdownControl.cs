@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;   
+using TMPro;
 
 public class dropdownControl : MonoBehaviour
 {
@@ -35,6 +35,22 @@ public class dropdownControl : MonoBehaviour
         optData2.text = "2 x 3";
         messages.Add(optData2);
 
+        optData3 = new TMP_Dropdown.OptionData();
+        optData3.text = "2 x 5";
+        messages.Add(optData3);
+
+        var optData4 = new TMP_Dropdown.OptionData();
+        optData4.text = "3 x 4";
+        messages.Add(optData4);
+
+        var optData5 = new TMP_Dropdown.OptionData();
+        optData5.text = "4 x 4";
+        messages.Add(optData5);
+
+        var optData6 = new TMP_Dropdown.OptionData();
+        optData6.text = "4 x 5";
+        messages.Add(optData6);
+
         //Take each entry in the message List
         foreach (TMP_Dropdown.OptionData message in messages)
         {
@@ -49,7 +65,7 @@ public class dropdownControl : MonoBehaviour
         drop.RefreshShownValue();
         txt.text = "Option " + drop.value + ": " + drop.options[drop.value].text;
     }
-  
+
 
     //Ouput the new value of the Dropdown into Text
     public void ValueChanged(TMP_Dropdown change)
@@ -68,8 +84,31 @@ public class dropdownControl : MonoBehaviour
                 PlayerPrefs.SetInt("rows", 2);
                 PlayerPrefs.SetInt("columns", 3);
                 PlayerPrefs.SetInt("dropdown_value", 1);
-                break;              
-
+                break;
+            case 2: //2 x 5
+                SceneCtrl.SetSize(2, 5);
+                PlayerPrefs.SetInt("rows", 2);
+                PlayerPrefs.SetInt("columns", 5);
+                PlayerPrefs.SetInt("dropdown_value", 2);
+                break;
+            case 3: //3 x 4
+                SceneCtrl.SetSize(3, 4);
+                PlayerPrefs.SetInt("rows", 3);
+                PlayerPrefs.SetInt("columns", 4);
+                PlayerPrefs.SetInt("dropdown_value", 3);
+                break;
+            case 4: //4 x 4
+                SceneCtrl.SetSize(4, 4);
+                PlayerPrefs.SetInt("rows", 4);
+                PlayerPrefs.SetInt("columns", 4);
+                PlayerPrefs.SetInt("dropdown_value", 4);
+                break;
+            case 5: //4 x 5
+                SceneCtrl.SetSize(4, 5);
+                PlayerPrefs.SetInt("rows", 4);
+                PlayerPrefs.SetInt("columns", 5);
+                PlayerPrefs.SetInt("dropdown_value", 5);
+                break;
         }
         PlayerPrefs.Save();
         SceneCtrl.Restart();
