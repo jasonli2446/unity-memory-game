@@ -23,12 +23,58 @@ public class HW4SceneController : MonoBehaviour
 	private int _score = 0;
 	private bool updateRan;
 
+	// Helper method to calculate scale factor based on grid dimensions
+	private float GetScaleFactorForGrid(int rows, int cols)
+	{
+		float scaleFactor = 1.0f;
+		if (rows > 2 || cols > 4)
+		{
+			scaleFactor = 0.8f; // Smaller cards for larger grids
+		}
+		if (rows >= 4 && cols >= 4)
+		{
+			scaleFactor = 0.7f; // Even smaller for the largest grids
+		}
+		return scaleFactor;
+	}
+
+	// Helper method to adjust spacing based on grid dimensions
+	private void AdjustSpacingForGrid(int rows, int cols)
+	{
+		offsetX = 2f;
+		offsetY = 2.5f;
+
+		if (rows > 2 || cols > 4)
+		{
+			offsetX = 1.6f; // Reduce horizontal spacing for larger grids
+			offsetY = 2.0f; // Reduce vertical spacing for larger grids
+		}
+		if (rows >= 4 && cols >= 4)
+		{
+			offsetX = 1.4f; // Even smaller spacing for largest grids
+			offsetY = 1.8f; // Even smaller spacing for largest grids
+		}
+	}
+
+	// Helper method to get appropriate cell size based on grid dimensions
+	private float GetCellSizeForGrid(int rows, int cols)
+	{
+		float cellSize = 100f;
+		if (rows > 2 || cols > 4)
+		{
+			cellSize = 80f; // Smaller cards for larger grids
+		}
+		if (rows >= 4 && cols >= 4)
+		{
+			cellSize = 70f; // Even smaller for the largest grids
+		}
+		return cellSize;
+	}
+
 	public bool canReveal
 	{
 		get { return _secondRevealed == null; }
 	}
-
-	//public static HW4SceneController Instance;
 
 	void Awake()
 	{
@@ -36,15 +82,16 @@ public class HW4SceneController : MonoBehaviour
 		{
 			gridRows = PlayerPrefs.GetInt("rows", 2);
 			gridCols = PlayerPrefs.GetInt("columns", 4);
-
 		}
-
 	}
 
 	// Use this for initialization
 	void Start()
 	{
 		Vector3 startPos = originalCard.transform.position;
+
+		// Adjust spacing using helper method
+		AdjustSpacingForGrid(gridRows, gridCols);
 
 		// Create shuffled list of cards with appropriate number of pairs
 		int pairsNeeded = (gridRows * gridCols) / 2;
@@ -58,6 +105,8 @@ public class HW4SceneController : MonoBehaviour
 		}
 
 		numbers = ShuffleArray(numbers);
+
+		float scaleFactor = GetScaleFactorForGrid(gridRows, gridCols);
 
 		// place cards in a grid
 		for (int i = 0; i < gridCols; i++)
@@ -81,12 +130,14 @@ public class HW4SceneController : MonoBehaviour
 				int id = numbers[index];
 				card.SetCard(id, images[id]);
 
+				// Apply calculated scale factor
+				card.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+
 				float posX = (offsetX * i) + startPos.x;
 				float posY = -(offsetY * j) + startPos.y;
 				card.transform.position = new Vector3(posX, posY, startPos.z);
 			}
 		}
-
 	}
 
 	private void Update()
@@ -101,8 +152,8 @@ public class HW4SceneController : MonoBehaviour
 		{/* prevent infinite loop if dropdown onValueChanged reloads scene*/
 			updateRan = true;
 		}
-
 	}
+
 	// Knuth shuffle algorithm
 	private int[] ShuffleArray(int[] numbers)
 	{
@@ -130,17 +181,14 @@ public class HW4SceneController : MonoBehaviour
 		}
 	}
 
-
 	private IEnumerator CheckMatch()
 	{
-
 		// increment score if the cards match
 		if (_firstRevealed.id == _secondRevealed.id)
 		{
 			_score++;
 			scoreLabel.text = "Score: " + _score;
 		}
-
 		// otherwise turn them back over after .5s pause
 		else
 		{
@@ -156,23 +204,18 @@ public class HW4SceneController : MonoBehaviour
 
 	public void Restart()
 	{
-
 		if (updateRan) /* prevents infinite loop if onValueChanged reloads scene */
 		{
 			SceneManager.LoadScene("CH5Scene");
 		}
-
-
 	}
 
 	public void LoadScene2()
 	{
 		/* Load using scene filename */
 		SceneManager.LoadScene("CH5Scene2");
-
 		/* Or load scene using index from Build Settings*/
 		//SceneManager.LoadScene(1); /      
-
 	}
 
 	public void SetSize(int row, int col)
@@ -210,14 +253,31 @@ public class HW4SceneController : MonoBehaviour
 				gridCols = 5;
 				break;
 		}
+
 		GameObject c_card;
 		GameObject grid = GameObject.Find("GridLayout").gameObject;
 		GridLayoutGroup glg = grid.GetComponent<GridLayoutGroup>();
 
 		glg.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
 		glg.constraintCount = gridCols;
-		glg.cellSize.Set(100f, 100f);
-		glg.spacing.Set(5f, 5f);
+
+		// Get cell size using helper method
+		float cellSize = GetCellSizeForGrid(gridRows, gridCols);
+		glg.cellSize = new Vector2(cellSize, cellSize);
+
+		// Adjust spacing based on grid size
+		float spacing = 5f;
+		if (gridRows > 2 || gridCols > 4)
+		{
+			spacing = 4f;
+		}
+		if (gridRows >= 4 && gridCols >= 4)
+		{
+			spacing = 3f;
+		}
+		glg.spacing = new Vector2(spacing, spacing);
+
+		float scaleFactor = GetScaleFactorForGrid(gridRows, gridCols);
 
 		for (int i = 0; i < gridCols; i++)
 		{
@@ -233,9 +293,11 @@ public class HW4SceneController : MonoBehaviour
 				}
 
 				c_card.transform.SetParent(grid.transform);
+
+				// Apply calculated scale factor
+				c_card.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
 			}
 		}
-
 	}
 
 	public void SetupGridLayout()
@@ -247,19 +309,23 @@ public class HW4SceneController : MonoBehaviour
 		glg.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
 		glg.constraintCount = gridCols;
 
-		// Adjust cell size based on grid dimensions
-		float cellSize = 100f;
+		// Get cell size using helper method
+		float cellSize = GetCellSizeForGrid(gridRows, gridCols);
+		glg.cellSize = new Vector2(cellSize, cellSize);
+
+		// Adjust spacing based on grid size
+		float spacing = 5f;
 		if (gridRows > 2 || gridCols > 4)
 		{
-			cellSize = 80f; // Smaller cards for larger grids
+			spacing = 4f;
 		}
 		if (gridRows >= 4 && gridCols >= 4)
 		{
-			cellSize = 70f; // Even smaller for the largest grids
+			spacing = 3f;
 		}
+		glg.spacing = new Vector2(spacing, spacing);
 
-		glg.cellSize = new Vector2(cellSize, cellSize);
-		glg.spacing.Set(5f, 5f);
+		float scaleFactor = GetScaleFactorForGrid(gridRows, gridCols);
 
 		for (int i = 0; i < gridCols; i++)
 		{
@@ -267,6 +333,9 @@ public class HW4SceneController : MonoBehaviour
 			{
 				c_card = Instantiate(canvasCard) as GameObject;
 				c_card.transform.SetParent(grid.transform);
+
+				// Apply calculated scale factor
+				c_card.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
 			}
 		}
 	}

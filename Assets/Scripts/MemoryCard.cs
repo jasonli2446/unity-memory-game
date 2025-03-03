@@ -16,9 +16,12 @@ public class MemoryCard : MonoBehaviour
 	public void SetCard(int id, Sprite image)
 	{
 		_id = id;
-		GetComponent<SpriteRenderer>().sprite = image;
-	}
+		SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+		spriteRenderer.sprite = image;
 
+		// Use Simple mode instead of Tiled mode to prevent repeating grid pattern
+		spriteRenderer.drawMode = SpriteDrawMode.Simple;
+	}
 	public void OnMouseDown()
 	{
 		if (//!EventSystem.current.IsPointerOverGameObject() &&
